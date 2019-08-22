@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+TextStyle openStyle = TextStyle(
+  fontSize: 18.0,
+  fontFamily: "Raleway",
+);
 
 void main() => runApp(MyApp());
 
@@ -27,8 +34,23 @@ class _MyHomePageState extends State<MyHomePage> {
   int id = 0;
   int pRepos = 0;
   TextEditingController user = TextEditingController();
+  String url = "https://api.github.com/users/";
 
-  getData() {}
+  getData() async {
+    String profile = url + user.text;
+    print(profile);
+    var res = await http.get(profile, headers: {"Accept": "application/json"});
+    var resBody = json.decode(res.body);
+    name = resBody['name'];
+    id = resBody['id'];
+    pRepos = resBody['public_repos'];
+    setState(() {
+      print("Success!");
+      print(user);
+    });
+  }
+
+  //getData(String voe){}
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 10.0,
+              height: 24.0,
             ),
             Container(
               padding: EdgeInsets.all(12.0),
@@ -63,12 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
               width: MediaQuery.of(context).size.width - 34,
             ),
             SizedBox(
-              height: 10.0,
+              height: 36.0,
             ),
             Container(
               padding: EdgeInsets.all(12.0),
               child: Center(
-                child: Text("Name: $name"),
+                child: Text(
+                  "Name: $name",
+                  style: openStyle,
+                ),
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
@@ -78,12 +103,15 @@ class _MyHomePageState extends State<MyHomePage> {
               width: MediaQuery.of(context).size.width - 64,
             ),
             SizedBox(
-              height: 10.0,
+              height: 18.0,
             ),
             Container(
               padding: EdgeInsets.all(12.0),
               child: Center(
-                child: Text("ID: $id"),
+                child: Text(
+                  "ID: $id",
+                  style: openStyle,
+                ),
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
@@ -93,12 +121,15 @@ class _MyHomePageState extends State<MyHomePage> {
               width: MediaQuery.of(context).size.width - 64,
             ),
             SizedBox(
-              height: 10.0,
+              height: 18.0,
             ),
             Container(
               padding: EdgeInsets.all(12.0),
               child: Center(
-                child: Text("Public Repos: $pRepos"),
+                child: Text(
+                  "Public Repos: $pRepos",
+                  style: openStyle,
+                ),
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
@@ -111,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: getData(),
+        onPressed: getData,
         child: Icon(Icons.get_app),
       ),
     );
