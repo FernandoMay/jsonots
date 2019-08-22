@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Json!',
       theme: ThemeData(
-        primarySwatch: Colors.brown,
+        primarySwatch: Colors.cyan,
       ),
       home: MyHomePage(),
     );
@@ -34,11 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
   int id = 0;
   int pRepos = 0;
   TextEditingController user = TextEditingController();
-  String url = "https://api.github.com/users/";
 
   getData() async {
-    String profile = url + user.text;
-    print(profile);
+    String url = "https://api.github.com/users/";
+    String profile = '$url$user.text';
     var res = await http.get(profile, headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     name = resBody['name'];
@@ -46,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
     pRepos = resBody['public_repos'];
     setState(() {
       print("Success!");
-      print(user);
     });
   }
 
@@ -55,13 +53,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Json!"),
+        title: Text(
+          "Json!",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
       ),
-      body: Container(
-        color: Colors.black,
-        padding: EdgeInsets.all(12.0),
+      body: Center(
         child: Column(
           children: <Widget>[
             SizedBox(
@@ -143,7 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getData,
-        child: Icon(Icons.get_app),
+        child: Icon(
+          Icons.get_app,
+          color: Colors.white,
+        ),
       ),
     );
   }
